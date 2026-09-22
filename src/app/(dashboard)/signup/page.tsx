@@ -1,17 +1,16 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { SignInButton, SignOutButton } from "@/components/auth/auth-buttons";
 
 export default async function SignUp() {
-  const session = await getServerSession(authOptions);
+  const user = await getCurrentUser();
 
-  if (!session) {
+  if (!user) {
     return <SignInButton />;
   }
 
   return (
     <>
-      <p>Signed in as {session.user?.name}</p>
+      <p>Signed in as {user.name}</p>
       <SignOutButton />
     </>
   );

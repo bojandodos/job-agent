@@ -3,10 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { UserType } from "@/generated/prisma/client";
 import { SignOutButton } from "@/components/auth/auth-buttons";
 import { GeneralButton } from "@/components/general/general-button";
 
-export function Nav({ isLoggedIn }: { isLoggedIn: boolean }) {
+export function Nav({
+  isLoggedIn,
+  userType,
+}: {
+  isLoggedIn: boolean;
+  userType: UserType | null;
+}) {
   const pathname = usePathname();
 
   return (
@@ -18,7 +25,7 @@ export function Nav({ isLoggedIn }: { isLoggedIn: boolean }) {
       </div>
       {isLoggedIn ? (
         <div className="flex items-center gap-4">
-          <span>Post job</span>
+          {userType === "Company" && <span>Post job</span>}
           <SignOutButton />
         </div>
       ) : (

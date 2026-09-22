@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { Nav } from "@/components/nav";
 
 export default async function HomeLayout({
@@ -7,11 +6,11 @@ export default async function HomeLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  const user = await getCurrentUser();
 
   return (
     <>
-      <Nav isLoggedIn={!!session} />
+      <Nav isLoggedIn={!!user} userType={user?.userType ?? null} />
       {children}
     </>
   );

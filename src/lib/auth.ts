@@ -1,4 +1,4 @@
-import type { NextAuthOptions } from "next-auth";
+import { getServerSession, type NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import { prisma } from "./prisma";
 export const authOptions: NextAuthOptions = {
@@ -32,3 +32,13 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
+
+export async function getCurrentUser() {
+  const session = await getServerSession(authOptions);
+  if (!session) return null;
+
+  return prisma.user.findUnique({
+    where: { githubId: session.user.githubId },
+    include: { company: true, jobSeeker: true },
+  });
+}
